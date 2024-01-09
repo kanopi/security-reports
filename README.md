@@ -54,7 +54,7 @@ Environment variables can be used by either exporting them, or by using a `.env`
 Clone the source code
 
 ```shell
-git clone git@github.com:kanopi/sonarqube-report sonarcloud-report
+git clone git@github.com:kanopi/sonarqube-report sonarqube-report
 cd sonarqube-report
 ```
 
