@@ -367,6 +367,10 @@ run_scanner() {
     docker cp ${PROJECT_DIRECTORY} "temp_${PROJECT_NAME}":/project > /dev/null
     docker rm -f "temp_${PROJECT_NAME}" >/dev/null
 
+    echo-notice "Removing unresolved symlinks (which can cause the scanner to fail)..."
+    docker run --rm -it -v "${VOLUME_NAME}:/project" \
+        alpine find project/${PROJECT_NAME} -type l -exec test ! -e {} \; -print -delete
+
     # Run the Scanner
     echo-notice "Running Scanner..."
     echo-warning "This process can take a decent amount of time..."
