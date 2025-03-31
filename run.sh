@@ -364,12 +364,10 @@ run_scanner() {
         -v "${VOLUME_NAME}:/project" \
         --name="temp_${PROJECT_NAME}" \
         busybox > /dev/null
+    echo-notice "Removing unresolved symlinks..."
+    docker exec "temp_${PROJECT_NAME}" sh -c 'find /project -type l -exec test ! {} \; -print -delete'
     docker cp ${PROJECT_DIRECTORY} "temp_${PROJECT_NAME}":/project > /dev/null
     docker rm -f "temp_${PROJECT_NAME}" >/dev/null
-
-    echo-notice "Removing unresolved symlinks (which can cause the scanner to fail)..."
-    docker run --rm -it -v "${VOLUME_NAME}:/project" \
-        alpine find project/${PROJECT_NAME} -type l -exec test ! -e {} \; -print -delete
 
     # Run the Scanner
     echo-notice "Running Scanner..."
