@@ -364,6 +364,8 @@ run_scanner() {
         -v "${VOLUME_NAME}:/project" \
         --name="temp_${PROJECT_NAME}" \
         busybox > /dev/null
+    echo-notice "Removing unresolved symlinks..."
+    docker exec "temp_${PROJECT_NAME}" sh -c 'find /project -type l -exec test ! {} \; -print -delete'
     docker cp ${PROJECT_DIRECTORY} "temp_${PROJECT_NAME}":/project > /dev/null
     docker rm -f "temp_${PROJECT_NAME}" >/dev/null
 
