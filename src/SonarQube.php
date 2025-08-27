@@ -81,6 +81,11 @@ final class SonarQube
     public function isQueueEmpty(): bool
     {
         try {
+            // Added sonarcloud.io fix as this always reports false.
+            if ($this->client->getConfig()['base_uri']->getHost() === 'sonarcloud.io') {
+                return true;
+            }
+
             $response = $this->client->get('/api/analysis_reports/is_queue_empty');
             return $response->getBody()->getContents() === 'true';
         } catch (GuzzleException | JsonException $exception) {
