@@ -32,7 +32,7 @@ fi
 PASSWORD=${PASSWORD:-password}
 USERNAME=${USERNAME:-admin}
 PORT=${PORT:-9000}
-HOST=${HOST:-"http://127.0.0.1:9000"}
+HOST=${HOST:-"http://127.0.0.1:${PORT}"}
 MAX_TRIES=${MAX_TRIES:-3}
 SLEEPTIME=${SLEEPTIME:-90}
 PROJECT_DIRECTORY=${PROJECT_DIRECTORY:-$(pwd)}
@@ -40,7 +40,7 @@ PROJECT_NAME=${PROJECT_NAME:-$(basename ${PROJECT_DIRECTORY})}
 SERVICE_NAME=${SERVICE_NAME:-sonarqube}
 
 SONARQUBE_CLI_REMOTE_HOST=${SONARQUBE_CLI_REMOTE_HOST:-"http://${SERVICE_NAME}:9000"}
-SONARQUBE_SERVICE_IMAGE=${SONARQUBE_SERVICE_IMAGE:-"sonarqube:9-community"}
+SONARQUBE_SERVICE_IMAGE=${SONARQUBE_SERVICE_IMAGE:-"sonarqube:lts-community"}
 SONARQUBE_REPORT_IMAGE=${SONARQUBE_REPORT_IMAGE:-"devkteam/sonarqube-report:latest"}
 SONARQUBE_CLI_IMAGE=${SONARQUBE_CLI_IMAGE:-"devkteam/sonar-scanner-cli:latest"}
 SONARQUBE_REPORT_FILE_NAME=${SONARQUBE_REPORT_FILE_NAME:-"report.pdf"}
@@ -223,7 +223,7 @@ cleanup() {
 start_sonarqube() {
     docker run -itd --rm \
         --name ${SERVICE_NAME} \
-        -p ${PORT}:${PORT} \
+        -p ${PORT}:9000 \
         ${SONARQUBE_SERVICE_IMAGE} > /dev/null
 }
 
